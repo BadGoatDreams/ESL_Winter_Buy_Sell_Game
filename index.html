@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frostbite Falls: Winter Emergency</title>
+    <title>❄️ Frostbite Falls: Winter Emergency</title>
     <style>
         :root {
             --mtn-blue: #2c3e50;
@@ -13,230 +13,207 @@
             --pine: #27ae60;
         }
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--snow); margin: 0; padding: 20px; }
-        .container { max-width: 650px; margin: 0 auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-top: 10px solid var(--mtn-blue); position: relative; }
+        .container { max-width: 650px; margin: 0 auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-top: 10px solid var(--mtn-blue); position: relative; min-height: 400px; }
         
         h1 { color: var(--mtn-blue); margin-top: 0; text-transform: uppercase; }
-        .news-flash { background: var(--mtn-blue); color: var(--gold); padding: 12px; border-radius: 5px; margin: 15px 0; font-weight: bold; border: 2px solid var(--gold); }
+        .news-flash { background: var(--mtn-blue); color: var(--gold); padding: 12px; border-radius: 5px; margin: 15px 0; font-weight: bold; border: 2px solid var(--gold); font-size: 0.9em; }
 
-        button { background: var(--mtn-blue); color: white; border: none; padding: 15px; margin: 8px 0; font-size: 17px; border-radius: 6px; cursor: pointer; width: 100%; transition: 0.2s; }
+        button { background: var(--mtn-blue); color: white; border: none; padding: 15px; margin: 8px 0; font-size: 17px; border-radius: 6px; cursor: pointer; width: 100%; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
         button:hover { opacity: 0.9; transform: translateY(-1px); }
         .btn-news { background: var(--fine-red); }
-        .btn-sheriff { border: 2px solid var(--gold); color: var(--gold); }
+        .btn-sheriff { border: 2px solid var(--gold); color: var(--gold); font-weight: bold; }
         
         .inner-help-btn { 
-            background: #7f8c8d; color: white; border-radius: 50%; width: 30px; height: 30px; 
+            background: #7f8c8d; color: white; border-radius: 50%; width: 35px; height: 35px; 
             display: flex; align-items: center; justify-content: center; font-weight: bold;
-            position: absolute; right: 20px; top: 20px; cursor: pointer; border: 2px solid white;
+            position: absolute; right: 20px; top: 20px; cursor: pointer; border: 2px solid white; z-index: 10;
         }
 
         .hidden { display: none !important; }
 
-        /* Fixed Help Overlay Styles */
         #help-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.85); color: white; z-index: 999; 
+            background: rgba(0,0,0,0.9); color: white; z-index: 9999; 
             display: flex; align-items: center; justify-content: center; 
         }
-        .help-content { max-width: 400px; background: var(--mtn-blue); padding: 30px; border-radius: 10px; text-align: left; border: 2px solid var(--gold); pointer-events: auto; }
+        .help-content { max-width: 400px; background: var(--mtn-blue); padding: 30px; border-radius: 10px; border: 2px solid var(--gold); }
 
-        .card { text-align: left; padding: 20px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; margin: 15px 0; }
+        .card { text-align: left; padding: 20px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; margin: 15px 0; color: #333; }
         .wallet-box { background: var(--pine); color: white; padding: 15px; border-radius: 8px; margin: 15px 0; font-size: 28px; font-weight: bold; text-align: center; }
-        .personality-box { background: #fffde7; border-left: 5px solid var(--gold); padding: 15px; font-style: italic; margin-bottom: 10px; color: #333; }
-        .price-list { list-style: none; padding: 0; }
-        .price-list li { padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; color: #333; }
+        .personality-box { background: #fffde7; border-left: 5px solid var(--gold); padding: 15px; font-style: italic; margin-bottom: 10px; color: #333; text-align: left; }
+        .price-list { list-style: none; padding: 0; text-align: left; }
+        .price-list li { padding: 12px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; color: #333; font-size: 1.1em; }
+        
+        .grid-fines { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     </style>
 </head>
 <body>
 
 <div id="help-overlay" class="hidden">
     <div class="help-content">
-        <h2 id="help-title">Instructions</h2>
-        <p id="help-text" style="line-height: 1.5; margin-bottom: 20px;"></p>
-        <button onclick="closeHelp()">Back to Game</button>
+        <h2 id="help-title">❓ Instructions</h2>
+        <p id="help-text" style="line-height: 1.6; margin-bottom: 20px;"></p>
+        <button onclick="closeHelp()">👍 Understood</button>
     </div>
 </div>
 
-<div class="container" id="main-menu">
+<div id="screen-main" class="container">
     <h1>🏔️ Frostbite Falls</h1>
-    <div id="news-ticker" class="news-flash">📢 NEWS: Keep it in English, partners!</div>
-    
+    <div id="news-ticker" class="news-flash">📢 RADIO: Keep it in English, partners! ❄️</div>
     <button onclick="triggerNews()" class="btn-news">🗞️ BREAKING NEWS (Event)</button>
-    <button onclick="startBuyer()">🛍️ I am a Citizen (Buyer)</button>
-    <button onclick="showSellerMenu()">🏪 I am a Business (Seller)</button>
-    <button onclick="showSheriff()" class="btn-sheriff">⭐ I am the Sheriff</button>
+    <button onclick="navTo('screen-buyer'); startBuyer();">🛍️ I am a Citizen (Buyer)</button>
+    <button onclick="navTo('screen-seller-menu');">🏪 I am a Business (Seller)</button>
+    <button onclick="navTo('screen-sheriff');" class="btn-sheriff">⭐ I am the Sheriff</button>
 </div>
 
-<div class="container hidden" id="buyer-section">
+<div id="screen-buyer" class="container hidden">
     <div class="inner-help-btn" onclick="openHelp('buyer')">?</div>
     <h2 id="mission-title">Mission</h2>
     <div class="card">
-        <p id="mission-context" style="color:#333; font-weight:bold;"></p>
-        <ul id="shopping-list" style="color:#333;"></ul>
+        <p id="mission-context" style="font-weight: bold;"></p>
+        <ul id="shopping-list"></ul>
     </div>
     <div class="wallet-box">💰 $<span id="wallet-val">0</span></div>
-    
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-        <button onclick="changeMoney(-20)" style="background:var(--fine-red); font-size: 14px;">🚨 Language Fine ($20)</button>
-        <button onclick="changeMoney(-10)" style="background:#e67e22; font-size: 14px;">🚨 Grammar Fine ($10)</button>
-        <button onclick="changeMoney(-10)">Spend $10</button>
-        <button onclick="changeMoney(-1)">Spend $1</button>
+    <div class="grid-fines">
+        <button onclick="changeMoney(-20)" style="background:var(--fine-red); font-size: 13px;">🤬 Language Fine (-$20)</button>
+        <button onclick="changeMoney(-10)" style="background:#e67e22; font-size: 13px;">✍️ Grammar Fine (-$10)</button>
+        <button onclick="changeMoney(-10)">💸 Spend $10</button>
+        <button onclick="changeMoney(10)" style="background:#7f8c8d;">🪙 Get Change</button>
     </div>
-    <button onclick="resetApp()" style="background:#7f8c8d;">Home</button>
+    <button onclick="navTo('screen-main')" style="background:#34495e;">🏠 Home</button>
 </div>
 
-<div class="container hidden" id="seller-menu">
+<div id="screen-seller-menu" class="container hidden">
     <div class="inner-help-btn" onclick="openHelp('seller')">?</div>
-    <h2>🏪 Select Your Business</h2>
-    <div id="seller-buttons"></div>
-    <button onclick="resetApp()" style="background:#7f8c8d;">Back</button>
+    <h2>🏪 Main Street Shops</h2>
+    <div id="shop-links"></div>
+    <button onclick="navTo('screen-main')" style="background:#7f8c8d;">⬅️ Back</button>
 </div>
 
-<div class="container hidden" id="seller-dashboard">
+<div id="screen-seller-dash" class="container hidden">
     <div class="inner-help-btn" onclick="openHelp('seller')">?</div>
-    <h2 id="shop-title"></h2>
-    <div class="personality-box"><strong>Your Character:</strong> <span id="shop-personality"></span></div>
+    <h2 id="shop-title">Shop Name</h2>
+    <div class="personality-box"><strong>🎭 Acting Tip:</strong> <span id="shop-personality"></span></div>
     <ul class="price-list" id="shop-items"></ul>
-    <button onclick="showSellerMenu()">Change Shop</button>
-    <button onclick="resetApp()" style="background:#7f8c8d;">Main Menu</button>
+    <button onclick="navTo('screen-seller-menu')">🔄 Switch Shops</button>
+    <button onclick="navTo('screen-main')" style="background:#7f8c8d;">🏠 Main Menu</button>
 </div>
 
-<div class="container hidden" id="sheriff-section">
+<div id="screen-sheriff" class="container hidden">
     <div class="inner-help-btn" onclick="openHelp('sheriff')">?</div>
     <h2>⭐ Sheriff's Office</h2>
-    <div class="card" style="color:#333;">
-        <div class="personality-box"><strong>Acting Tip:</strong> Be strict! Catch people speaking Tajik or Russian.</div>
-        <h3>The Laws:</h3>
+    <div class="card">
+        <div class="personality-box">🤠 Catch people speaking Tajik or Russian and fine them immediately!</div>
+        <h3>⚖️ The Laws:</h3>
         <ul>
-            <li>No English: <b>$20</b></li>
-            <li>Grammar mistake: <b>$10</b></li>
-            <li>No 'S' on plurals: <b>$10</b></li>
+            <li>🚫 No English: <b>$20 Fine</b></li>
+            <li>❌ Grammar mistake: <b>$10 Fine</b></li>
+            <li>👉 Pointing instead of speaking: <b>$10 Fine</b></li>
         </ul>
     </div>
-    <button onclick="resetApp()" style="background:#7f8c8d;">Exit Duty</button>
+    <button onclick="navTo('screen-main')" style="background:#7f8c8d;">🚪 Exit Duty</button>
 </div>
 
 <script>
-    const helpData = {
-        buyer: "BUYER ROLE: Visit shops and use English to buy the items on your list. If the Sheriff catches you speaking Tajik or Russian, you lose $20! Negotiate for better prices.",
-        seller: "SELLER ROLE: You are a business owner. Act like the character in the yellow box. Your goal is to make money! Tell the Sheriff if buyers use bad English.",
-        sheriff: "SHERIFF ROLE: Listen to the room. If anyone speaks Tajik, Russian, or makes a grammar mistake, tell them 'That's a fine!' and ensure they pay."
+    const helpText = {
+        buyer: "MISSION: Use English to buy the items on your list. 🛍️ If the Sheriff catches you speaking Tajik or Russian, you lose $20! 😱 You can haggle for a lower price.",
+        seller: "MISSION: You own this business. 🏪 Act like your character. You want to make money! 💰 If a buyer uses bad English, call the Sheriff over.",
+        sheriff: "MISSION: Listen to everyone. 👮 If you hear a language other than English, tell them to pay a fine. Be strict but fair! 🤠"
     };
 
-    const newsEvents = [
-        "🚨 BLIZZARD: Everything is freezing! Wood and heaters cost $10 more.",
-        "🏈 SUPER BOWL: High demand for snacks and coffee!",
-        "🐻 BEAR ALERT: Bear in town! No moving for 1 minute.",
-        "⛷️ TOURISTS: Rich people in town. Sellers, raise those prices!",
-        "⚠️ BLACK ICE: Road tax! Everyone pay $5.",
-        "☀️ THAW: Sun is out. Shovels are 50% off."
+    const news = [
+        "🚨 BLIZZARD: Everything is freezing! Wood costs $10 more. ❄️",
+        "🏈 SUPER BOWL: High demand for snacks and donuts! 🍩",
+        "🐻 BEAR ALERT: Bear in town! No moving for 1 minute. 🐾",
+        "⛷️ TOURISTS: Rich travelers arrived. Sellers, raise prices! 🎿",
+        "⚠️ BLACK ICE: Road tax! Everyone pay $5. 🧊",
+        "☀️ THAW: Sun is out. Shovels are 50% off. 😎"
     ];
 
-    const missionTemplates = [
-        { t: "🚙 The Stuck Jeep", c: (n)=>`Your truck is stuck in snow. You need gear for ${n} people.`, l: (n)=>[ `${n} Tow Chains (Plow Co.)`, "1 Shovel (Plow Co.)", "1 Coffee (Cafe)"], b: [80, 120] },
-        { t: "🪵 Cabin Prep", c: (n)=>`The heater is broken. Prepare for ${n} nights.`, l: (n)=>[ `${n} Oak Bundles (Lumber)`, "1 Blanket (Knits)", `${n} Cans of Soup (Grocer)`], b: [90, 150] },
-        { t: "🏒 Hockey Team", c: (n)=>`You are the coach for ${n} players.`, l: (n)=>[ `${n} First Aid Kits (Pharmacy)`, "1 Box of Donuts (Cafe)", "1 Whistle (General)"], b: [110, 190] },
-        { t: "🎂 Birthday Party", c: (n)=>`A winter birthday for ${n} kids.`, l: (n)=>[ `${n} Toys (Toy Shop)`, "1 Cake (Cafe)", "1 Festive Scarf (Knits)"], b: [120, 200] },
-        { t: "🔦 Blackout!", c: (n)=>`No power in ${n} rooms.`, l: (n)=>[ `${n} Candles (Hardware)`, "1 Radio (Hardware)", `${n} Canned Chili (Grocer)`], b: [60, 110] },
-        { t: "🩹 The Cold Flu", c: (n)=>`${n} family members are sick.`, l: (n)=>[ `${n} Syrups (Pharmacy)`, "1 Thermometer (Pharmacy)", "1 Box of Tea (Grocer)"], b: [70, 130] },
-        { t: "⛷️ Ski Trip", c: (n)=>`Taking ${n} tourists up the mountain.`, l: (n)=>[ `${n} Lift Passes (Lodge)`, "1 Map (Newsstand)", `${n} Pairs of Socks (Knits)`], b: [160, 260] }
+    const missions = [
+        { t: "🚙 Stuck Jeep", c: (n)=>`Jeep is in a snowbank. Need gear for ${n} helpers. ❄️`, l: (n)=>[ `🚜 ${n} Tow Chains (Plow Co.)`, "🧹 1 Shovel (Plow Co.)", "☕ 1 Coffee (Cafe)"], b: [80, 120] },
+        { t: "🪵 Cabin Prep", c: (n)=>`Heater is broken. Prepare for ${n} nights. 🔥`, l: (n)=>[ `🪵 ${n} Oak Bundles (Lumber)`, "🧶 1 Blanket (Knits)", `🥫 ${n} Cans of Soup (Grocer)`], b: [90, 150] },
+        { t: "🏒 Hockey Team", c: (n)=>`You are coaching ${n} players. 🏒`, l: (n)=>[ `🩹 ${n} First Aid Kits (Pharmacy)`, "🍩 1 Box of Donuts (Cafe)", "📯 1 Whistle (Hardware)"], b: [110, 190] },
+        { t: "🎂 Birthday Party", c: (n)=>`Winter party for ${n} kids. 🎂`, l: (n)=>[ `🧸 ${n} Toys (Toy Shop)`, "🍰 1 Cake (Cafe)", "🧣 1 Scarf (Knits)"], b: [120, 200] },
+        { t: "🔦 Blackout!", c: (n)=>`No power in ${n} rooms. 🕯️`, l: (n)=>[ `🕯️ ${n} Candle Boxes (Hardware)`, "📻 1 Radio (Hardware)", `🥫 ${n} Canned Chili (Grocer)`], b: [60, 110] },
+        { t: "🩹 The Cold Flu", c: (n)=>`${n} family members are sick. 🤒`, l: (n)=>[ `🧪 ${n} Syrups (Pharmacy)`, "🌡️ 1 Thermometer (Pharmacy)", "🍵 1 Tea Box (Grocer)"], b: [70, 130] }
     ];
 
-    const sellers = [
-        { name: "🛒 Mountain Grocer", p: "Overly patriotic American 🇺🇸.", i: {"Chili": "$6", "Soup": "$4", "Milk": "$5", "Tea": "$4"} },
-        { name: "🚜 Big Red's Plows", p: "Rough and tough mechanic 🚜.", i: {"Tow Chain": "$30", "Salt Bag": "$10", "Shovel": "$20", "Gloves": "$15"} },
-        { name: "🧶 Granny's Knits", p: "Town Gossip 👵.", i: {"Wool Socks": "$12", "Beanie": "$18", "Blanket": "$45", "Mittens": "$10"} },
-        { name: "🪵 Sawmill Miller", p: "Old-school mountain man 🪓.", i: {"Oak Logs": "$20", "Pine Logs": "$12", "Axe": "$40", "Saw": "$35"} },
-        { name: "☕ The Coffee Cabin", p: "Talks 100mph, high energy ☕.", i: {"Coffee": "$5", "Donuts": "$15", "Cake": "$12", "Cocoa": "$4"} },
-        { name: "🚠 Peak Lodge", p: "Rich, posh, and snobby 💅.", i: {"Lift Pass": "$60", "Goggles": "$50", "Champagne": "$80", "Scarf": "$40"} },
-        { name: "🏥 Village Pharmacy", p: "Scared of germs and sneezing 🤒.", i: {"Syrup": "$10", "Vitamins": "$15", "First Aid": "$12", "Mask": "$5"} },
-        { name: "📰 Snowy Newsstand", p: "Grumpy, hates soggy papers 😠.", i: {"Newspaper": "$3", "Map": "$6", "Magazine": "$7", "Puzzle": "$5"} },
-        { name: "🧸 Toy Workshop", p: "Secretive and whispers 🤫.", i: {"Train": "$25", "Bear": "$18", "Doll": "$15", "Board Game": "$20"} },
-        { name: "🔨 Hardware Haven", p: "Survivalist expert ⚒️.", i: {"Radio": "$25", "Candles": "$5", "Flashlight": "$15", "Batteries": "$8"} }
+    const shops = [
+        { n: "🛒 Mountain Grocer", p: "Overly patriotic American 🇺🇸.", i: {"🥣 Chili": "$6", "🥫 Soup": "$4", "🥛 Milk": "$5", "🍵 Tea": "$4"} },
+        { n: "🚜 Big Red's Plows", p: "Rough mechanic 🚜.", i: {"⛓️ Tow Chain": "$30", "🧂 Salt Bag": "$10", "🧹 Shovel": "$20", "🧤 Gloves": "$15"} },
+        { n: "🧶 Granny's Knits", p: "Town Gossip 👵.", i: {"🧦 Wool Socks": "$12", "🧶 Beanie": "$18", "🛌 Blanket": "$45", "🧤 Mittens": "$10"} },
+        { n: "🪵 Sawmill Miller", p: "Grunts, speaks 2 words 🪓.", i: {"🪵 Oak Logs": "$20", "🪵 Pine Logs": "$12", "🪓 Axe": "$40", "🪚 Saw": "$35"} },
+        { n: "☕ The Coffee Cabin", p: "Talks 100mph ☕.", i: {"☕ Coffee": "$5", "🍩 Donuts": "$15", "🍰 Cake": "$12", "🍫 Cocoa": "$4"} },
+        { n: "🚠 Peak Lodge", p: "Rich and snobby 💅.", i: {"🎟️ Lift Pass": "$60", "🕶️ Goggles": "$50", "🥂 Champagne": "$80", "🧣 Scarf": "$40"} },
+        { n: "🏥 Village Pharmacy", p: "Scared of germs 🤒.", i: {"🧪 Syrup": "$10", "💊 Vitamins": "$15", "🩹 First Aid": "$12", "😷 Mask": "$5"} },
+        { n: "🔨 Hardware Haven", p: "Survivalist expert ⚒️.", i: {"📻 Radio": "$25", "🕯️ Candles": "$5", "🔦 Flashlight": "$15", "🔋 Batteries": "$8"} },
+        { n: "🧸 Toy Workshop", p: "Secretive, whispers 🤫.", i: {"🚂 Train": "$25", "🧸 Bear": "$18", "🪆 Doll": "$15", "🎲 Game": "$20"} },
+        { n: "📰 Snowy Newsstand", p: "Grumpy, hates wet paper 😠.", i: {"📰 Newspaper": "$3", "🗺️ Map": "$6", "📖 Magazine": "$7", "🧩 Puzzle": "$5"} }
     ];
 
     let currentWallet = 0;
 
-    function openHelp(role) {
-        document.getElementById('help-title').innerText = "Role Instructions";
-        document.getElementById('help-text').innerText = helpData[role];
-        document.getElementById('help-overlay').classList.remove('hidden');
-    }
-    
-    function closeHelp() { 
-        document.getElementById('help-overlay').classList.add('hidden'); 
+    function navTo(screenId) {
+        document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
+        document.getElementById(screenId).classList.remove('hidden');
+        if(screenId === 'screen-seller-menu') renderShopList();
     }
 
-    function triggerNews() {
-        const msg = newsEvents[Math.floor(Math.random() * newsEvents.length)];
-        document.getElementById('news-ticker').innerText = "📢 " + msg;
-        alert(msg);
-    }
-
-    function startBuyer() {
-        const temp = missionTemplates[Math.floor(Math.random() * missionTemplates.length)];
-        const n = Math.floor(Math.random() * 3) + 2;
-        document.getElementById('mission-title').innerText = temp.t;
-        document.getElementById('mission-context').innerText = temp.c(n);
-        const list = document.getElementById('shopping-list');
-        list.innerHTML = "";
-        temp.l(n).forEach(i => { let li = document.createElement('li'); li.innerText = i; list.appendChild(li); });
-        currentWallet = Math.floor(Math.random() * (temp.b[1] - temp.b[0] + 1)) + temp.b[0];
-        document.getElementById('wallet-val').innerText = currentWallet;
-        hideAll();
-        document.getElementById('buyer-section').classList.remove('hidden');
-    }
-
-    function showSellerMenu() {
-        const cont = document.getElementById('seller-buttons');
+    function renderShopList() {
+        const cont = document.getElementById('shop-links');
         cont.innerHTML = "";
-        sellers.forEach((s, idx) => {
-            let b = document.createElement('button'); 
-            b.innerText = s.name;
+        shops.forEach((s, idx) => {
+            let b = document.createElement('button');
+            b.innerText = s.n;
             b.onclick = () => openShop(idx);
             cont.appendChild(b);
         });
-        hideAll();
-        document.getElementById('seller-menu').classList.remove('hidden');
     }
 
     function openShop(idx) {
-        const s = sellers[idx];
-        document.getElementById('shop-title').innerText = s.name;
+        const s = shops[idx];
+        document.getElementById('shop-title').innerText = s.n;
         document.getElementById('shop-personality').innerText = s.p;
-        const itemsList = document.getElementById('shop-items');
-        itemsList.innerHTML = "";
-        for(const [name, price] of Object.entries(s.items)) {
+        const list = document.getElementById('shop-items');
+        list.innerHTML = "";
+        for(let [name, price] of Object.entries(s.i)) {
             let li = document.createElement('li');
             li.innerHTML = `<span>${name}</span><span>${price}</span>`;
-            itemsList.appendChild(li);
+            list.appendChild(li);
         }
-        hideAll();
-        document.getElementById('seller-dashboard').classList.remove('hidden');
+        navTo('screen-seller-dash');
     }
 
-    function showSheriff() {
-        hideAll();
-        document.getElementById('sheriff-section').classList.remove('hidden');
+    function startBuyer() {
+        const m = missions[Math.floor(Math.random() * missions.length)];
+        const n = Math.floor(Math.random() * 3) + 2;
+        document.getElementById('mission-title').innerText = m.t;
+        document.getElementById('mission-context').innerText = m.c(n);
+        const list = document.getElementById('shopping-list');
+        list.innerHTML = "";
+        m.l(n).forEach(i => { let li = document.createElement('li'); li.innerText = i; list.appendChild(li); });
+        currentWallet = Math.floor(Math.random() * (m.b[1] - m.b[0] + 1)) + m.b[0];
+        document.getElementById('wallet-val').innerText = currentWallet;
+    }
+
+    function triggerNews() {
+        const m = news[Math.floor(Math.random() * news.length)];
+        document.getElementById('news-ticker').innerText = "📢 " + m;
+        alert(m);
     }
 
     function changeMoney(amt) {
-        if(currentWallet + amt < 0) return alert("You don't have enough money!");
+        if(currentWallet + amt < 0) return alert("❌ Broke! No more money!");
         currentWallet += amt;
         document.getElementById('wallet-val').innerText = currentWallet;
     }
 
-    function hideAll() {
-        document.getElementById('main-menu').classList.add('hidden');
-        document.getElementById('buyer-section').classList.add('hidden');
-        document.getElementById('seller-menu').classList.add('hidden');
-        document.getElementById('seller-dashboard').classList.add('hidden');
-        document.getElementById('sheriff-section').classList.add('hidden');
+    function openHelp(role) {
+        document.getElementById('help-text').innerText = helpText[role];
+        document.getElementById('help-overlay').classList.remove('hidden');
     }
-
-    function resetApp() { 
-        hideAll(); 
-        document.getElementById('main-menu').classList.remove('hidden'); 
-    }
+    function closeHelp() { document.getElementById('help-overlay').classList.add('hidden'); }
 </script>
 </body>
 </html>
