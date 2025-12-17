@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winter Village Roleplay</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eef2f7;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 2px solid #d1e3f0;
+        }
+        h1 { color: #2c3e50; }
+        h2 { color: #2980b9; border-bottom: 2px solid #d1e3f0; padding-bottom: 10px;}
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            margin: 10px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 85%;
+            transition: transform 0.2s, background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        button:hover { background-color: #2980b9; transform: scale(1.02); }
+        button.secondary { background-color: #95a5a6; }
+        button.danger { background-color: #e74c3c; }
+        
+        .hidden { display: none; }
+        
+        .role-card, .buyer-card {
+            text-align: left;
+            background: #f8fbff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #d1e3f0;
+        }
+        
+        .price-list {
+            list-style: none;
+            padding: 0;
+        }
+        .price-list li {
+            background: white;
+            margin: 5px 0;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            border: 1px solid #bdc3c7;
+            font-size: 18px;
+        }
+        
+        .wallet-box {
+            background: #27ae60;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 0 #1e8449;
+        }
+        .wallet-amount { font-size: 40px; font-weight: bold; margin-top: 5px;}
+        
+        .control-panel {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        .control-btn { width: auto; padding: 10px 15px; font-size: 16px; }
+
+        .personality {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-style: italic;
+            border-left: 5px solid #ffeeba;
+            text-align: left;
+        }
+        ul li { margin-bottom: 5px; font-size: 18px; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="main-menu">
+    <h1>❄️ Winter Village Market</h1>
+    <p>The Great Snowstorm is coming! Choose your role:</p>
+    <center>
+        <button onclick="startBuyer()">🛍️ I am a BUYER (Citizen)</button>
+        <button onclick="showSellerMenu()">🏪 I am a SELLER (Shopkeeper)</button>
+    </center>
+</div>
+
+<div class="container hidden" id="buyer-section">
+    <h2>🎒 My Winter Mission</h2>
+    
+    <div class="buyer-card">
+        <h3 id="mission-title" style="color:#e67e22;">Loading...</h3>
+        <p id="mission-context" style="font-style: italic; color: #7f8c8d;"></p>
+        <h4>📝 My Shopping List:</h4>
+        <ul id="shopping-list"></ul>
+    </div>
+
+    <div class="wallet-box">
+        <div>💰 My Wallet</div>
+        <div class="wallet-amount">$<span id="wallet-val">0</span></div>
+    </div>
+
+    <div class="control-panel">
+        <button class="danger control-btn" onclick="changeMoney(-1)">💸 Pay $1</button>
+        <button class="danger control-btn" onclick="changeMoney(-5)">💸 Pay $5</button>
+        <button class="danger control-btn" onclick="changeMoney(-10)">💸 Pay $10</button>
+        <button class="danger control-btn" onclick="changeMoney(-50)">💸 Pay $50</button>
+    </div>
+    <div class="control-panel">
+        <button class="secondary control-btn" onclick="changeMoney(1)">➕ Get Change ($1)</button>
+        <button class="secondary control-btn" onclick="changeMoney(5)">➕ Get Change ($5)</button>
+    </div>
+
+    <br>
+    <center>
+        <button class="secondary" onclick="resetApp()">🔄 Start Over / Reset</button>
+    </center>
+</div>
+
+<div class="container hidden" id="seller-menu">
+    <h2>🏘️ Choose Your Shop</h2>
+    <center>
+        <div id="seller-buttons"></div>
+        <button class="secondary" onclick="resetApp()">⬅️ Back to Main</button>
+    </center>
+</div>
+
+<div class="container hidden" id="seller-dashboard">
+    <h2 id="shop-title">Shop Name</h2>
+    <div class="personality">
+        <strong>🎭 Acting Tip:</strong> <span id="shop-personality"></span>
+    </div>
+    
+    <h3>🏷️ Price List (Per Item)</h3>
+    <ul class="price-list" id="shop-items"></ul>
+    
+    <center>
+        <button class="secondary" onclick="showSellerMenu()">🔄 Switch Shops</button>
+        <button class="secondary" onclick="resetApp()">🏠 Close Shop</button>
+    </center>
+</div>
+
+<script>
+    // --- DATA ---
+    const missionTemplates = [
+        {
+            title: "🚗 The Frozen Car Emergency",
+            context: "Your car is frozen shut and your driveway is blocked with ice!",
+            list: (n) => [`🧂 ${n} Bags of Salt (Snow-Removal Co.)`, `🧪 ${n} Cans of De-icer (Hardware)`, "🧤 1 Pair of Mittens (Granny's)", "☕ 1 Road Coffee (Cafe)"],
+            budget: [50, 80]
+        },
+        {
+            title: "🎅 Host a Holiday Party",
+            context: "You are hosting a Secret Santa party for your friends!",
+            list: (n) => [`🧸 ${n} Gift Toys (Toy Workshop)`, `🪵 ${n} Bundles of Wood (Lumber)`, "🥧 1 Apple Pie (Cafe)", "🧀 1 Block of Cheese (Grocer)"],
+            budget: [100, 160]
+        },
+        {
+            title: "🎿 The Ski Trip Group",
+            context: "You and your friends are heading to the mountain for the day.",
+            list: (n) => [`🚠 ${n} Lift Passes (Lodge)`, `🧦 ${n} Pairs of Socks (Granny's)`, "🕶️ 1 Pair of Goggles (Lodge)", "💊 1 Box of Vitamins (Pharmacy)"],
+            budget: [180, 280]
+        },
+        {
+            title: "🔌 Power Outage Survival",
+            context: "The electricity went out! You need to keep the house warm and fed.",
+            list: (n) => [`🕯️ ${n} Boxes of Candles (General Store)`, `🥫 ${n} Cans of Soup (Grocer)`, "📻 1 Battery Radio (Hardware)", "🧶 1 Wool Blanket (Granny's)"],
+            budget: [45, 90]
+        },
+        {
+            title: "🏔️ Cabin Weekend Prep",
+            context: "You are renting a cabin in the woods for the weekend.",
+            list: (n) => [`🥩 ${n} Steaks (Butcher)`, `🪵 ${n} Oak Logs (Lumber)`, "🥂 1 Bottle of Champagne (Lodge)", "🗺️ 1 Trail Map (Newsstand)"],
+            budget: [110, 190]
+        }
+    ];
+
+    const sellers = [
+        {
+            name: "🛒 The Frozen Grocer",
+            personality: "Friendly but shivering! 🥶 Keeps rubbing their arms to stay warm.",
+            items: { "🍎 Winter Apples": "$3", "🥚 Fresh Eggs": "$4", "🥫 Hot Soup": "$3", "🧀 Block of Cheese": "$8" }
+        },
+        {
+            name: "🚜 Snow-Removal Co.",
+            personality: "Stressed and busy 📞. Talks very, very fast! Their phone is ringing.",
+            items: { "❄️ Snow Shovel": "$15", "🧂 Road Salt": "$10", "🚜 Plow Service": "$50", "🧤 Work Gloves": "$12" }
+        },
+        {
+            name: "🥩 The Winter Butcher",
+            personality: "Loud and jolly! 🍖 Thinks meat is the only way to survive the cold.",
+            items: { "🥩 Thick Steak": "$18", "🍗 Turkey Roast": "$25", "🌭 Sausages": "$10", "🍖 Smoked Ham": "$15" }
+        },
+        {
+            name: "🧶 Granny’s Knits",
+            personality: "Sweet and slow 👵. Tells long stories about her cats while she talks.",
+            items: { "🧦 Wool Socks": "$12", "🧶 Beanie": "$15", "🧤 Mittens": "$10", "🧣 Hand-knit Scarf": "$20" }
+        },
+        {
+            name: "🔨 The Frozen Nut (Hardware)",
+            personality: "A serious survivalist ⚒️. Warns you that the storm is getting worse.",
+            items: { "📻 Radio": "$25", "🧪 De-icer": "$8", "🔦 Flashlight": "$12", "🔋 Batteries": "$6" }
+        },
+        {
+            name: "🪵 Miller’s Lumber Yard",
+            personality: "Hard of hearing 👂. You have to speak VERY LOUDLY to be understood!",
+            items: { "🪵 Pine Bundle": "$12", "🪓 Small Axe": "$30", "🔥 Fire Starter": "$5", "🪵 Oak Logs": "$20" }
+        },
+        {
+            name: "🚠 The Mountain Lodge",
+            personality: "Posh and snobby 💅. Thinks your winter clothes are 'so last season'.",
+            items: { "🎟️ Lift Pass": "$55", "🧣 Silk Scarf": "$40", "🕶️ Goggles": "$45", "🥂 Champagne": "$70" }
+        },
+        {
+            name: "🏥 The Village Pharmacy",
+            personality: "Very worried 🤒. Obsessed with germs and catching a cold.",
+            items: { "🧪 Cough Syrup": "$10", "💊 Vitamins": "$15", "🤕 Bandages": "$5", "🌡️ Thermometer": "$12" }
+        },
+        {
+            name: "📰 The Snowy Newsstand",
+            personality: "Grumpy 😠. Hates the snow because it makes the newspapers soggy.",
+            items: { "📰 Daily News": "$3", "📖 Puzzle Book": "$6", "🗺️ Trail Map": "$5", "🕯️ Candles": "$4" }
+        },
+        {
+            name: "☕ The Snowbound Cafe",
+            personality: "Extremely sleepy 🥱. Keeps yawning and dreaming of a tropical beach.",
+            items: { "☕ Large Coffee": "$5", "🥧 Apple Pie": "$12", "🥯 Toasted Bagel": "$6", "🍪 Ginger Cookie": "$4" }
+        }
+    ];
+
+    // --- LOGIC ---
+    let currentWallet = 0;
+
+    function resetApp() {
+        document.getElementById('main-menu').classList.remove('hidden');
+        document.getElementById('buyer-section').classList.add('hidden');
+        document.getElementById('seller-menu').classList.add('hidden');
+        document.getElementById('seller-dashboard').classList.add('hidden');
+    }
+
+    function startBuyer() {
+        const template = missionTemplates[Math.floor(Math.random() * missionTemplates.length)];
+        const randomQty = Math.floor(Math.random() * 3) + 2; // Random number 2-4
+        
+        document.getElementById('mission-title').innerText = template.title;
+        document.getElementById('mission-context').innerText = template.context;
+        
+        const listEl = document.getElementById('shopping-list');
+        listEl.innerHTML = "";
+        template.list(randomQty).forEach(item => {
+            let li = document.createElement('li');
+            li.innerText = item;
+            listEl.appendChild(li);
+        });
+
+        // Set random budget within the template's range
+        currentWallet = Math.floor(Math.random() * (template.budget[1] - template.budget[0] + 1)) + template.budget[0];
+        updateWalletDisplay();
+
+        document.getElementById('main-menu').classList.add('hidden');
+        document.getElementById('buyer-section').classList.remove('hidden');
+    }
+
+    function changeMoney(amount) {
+        if (currentWallet + amount < 0) {
+            alert("🚫 You don't have enough money!");
+            return;
+        }
+        currentWallet += amount;
+        updateWalletDisplay();
+    }
+
+    function updateWalletDisplay() {
+        document.getElementById('wallet-val').innerText = currentWallet;
+    }
+
+    function showSellerMenu() {
+        const container = document.getElementById('seller-buttons');
+        container.innerHTML = "";
+        sellers.forEach((shop, index) => {
+            let btn = document.createElement('button');
+            btn.innerText = shop.name;
+            btn.onclick = () => openShop(index);
+            container.appendChild(btn);
+        });
+
+        document.getElementById('main-menu').classList.add('hidden');
+        document.getElementById('seller-dashboard').classList.add('hidden');
+        document.getElementById('seller-menu').classList.remove('hidden');
+    }
+
+    function openShop(index) {
+        const shop = sellers[index];
+        document.getElementById('shop-title').innerText = shop.name;
+        document.getElementById('shop-personality').innerHTML = shop.personality;
+        const list = document.getElementById('shop-items');
+        list.innerHTML = "";
+        for (const [item, price] of Object.entries(shop.items)) {
+            let li = document.createElement('li');
+            li.innerHTML = `<span>${item}</span> <span>${price}</span>`;
+            list.appendChild(li);
+        }
+        document.getElementById('seller-menu').classList.add('hidden');
+        document.getElementById('seller-dashboard').classList.remove('hidden');
+    }
+</script>
+
+</body>
+</html>
