@@ -3,180 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frostbite Falls: Winter Emergency</title>
+    <title>Frostbite Falls: The Complete Winter Town</title>
     <style>
         :root {
-            --mountain-blue: #2c3e50;
-            --snow-white: #f0f4f8;
-            --emergency-red: #e74c3c;
-            --pine-green: #27ae60;
-            --sheriff-gold: #f1c40f;
+            --mtn-blue: #2c3e50;
+            --snow: #f4f7f9;
+            --fine-red: #c0392b;
+            --gold: #f1c40f;
+            --pine: #27ae60;
         }
-        body {
-            font-family: 'Georgia', serif;
-            background-color: var(--snow-white);
-            margin: 0;
-            padding: 20px;
-            text-align: center;
-        }
-        .container {
-            max-width: 650px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            border-top: 8px solid var(--mountain-blue);
-        }
-        .town-header {
-            margin-bottom: 30px;
-            border-bottom: 2px double var(--mountain-blue);
-        }
-        h1 { color: var(--mountain-blue); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 2px; }
-        .sub-tag { font-style: italic; color: #7f8c8d; margin-bottom: 20px; display: block; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--snow); margin: 0; padding: 20px; }
+        .container { max-width: 650px; margin: 0 auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-top: 10px solid var(--mtn-blue); }
         
-        .news-flash {
-            background: #2c3e50;
-            color: var(--sheriff-gold);
-            padding: 15px;
-            border-radius: 4px;
-            margin: 15px 0;
-            font-weight: bold;
-            border: 2px solid var(--sheriff-gold);
-        }
+        h1 { color: var(--mtn-blue); margin-top: 0; text-transform: uppercase; }
+        .news-flash { background: var(--mtn-blue); color: var(--gold); padding: 12px; border-radius: 5px; margin: 15px 0; font-weight: bold; border: 2px solid var(--gold); }
 
-        button {
-            background-color: var(--mountain-blue);
-            color: white;
-            border: none;
-            padding: 15px;
-            margin: 10px 0;
-            font-size: 18px;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s;
-        }
-        button:hover { background-color: #34495e; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
-        .btn-news { background-color: var(--emergency-red); }
-        .btn-sheriff { background-color: #2c3e50; border: 2px solid var(--sheriff-gold); color: var(--sheriff-gold); font-weight: bold; }
-        
-        .buyer-card, .seller-dashboard, .sheriff-card { text-align: left; padding: 20px; background: #fff; border: 1px solid #ddd; border-radius: 4px; }
-        .wallet-box { background: var(--pine-green); color: white; padding: 15px; border-radius: 4px; margin: 20px 0; font-size: 24px; font-weight: bold; }
+        button { background: var(--mtn-blue); color: white; border: none; padding: 15px; margin: 8px 0; font-size: 17px; border-radius: 6px; cursor: pointer; width: 100%; transition: 0.2s; position: relative; }
+        button:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-news { background: var(--fine-red); }
+        .btn-sheriff { border: 2px solid var(--gold); color: var(--gold); }
+        .help-btn { background: #7f8c8d; width: 40px; height: 40px; border-radius: 50%; display: inline-block; position: absolute; right: 10px; top: 10px; font-weight: bold; padding: 0; line-height: 40px; }
+
         .hidden { display: none; }
+        .card { text-align: left; padding: 20px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; margin: 15px 0; }
+        .wallet-box { background: var(--pine); color: white; padding: 15px; border-radius: 8px; margin: 15px 0; font-size: 28px; font-weight: bold; text-align: center; }
+        .personality-box { background: #fffde7; border-left: 5px solid var(--gold); padding: 15px; font-style: italic; margin-bottom: 10px; }
         .price-list { list-style: none; padding: 0; }
-        .price-list li { padding: 12px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; }
-        .personality-box { background: #fdf9e1; border-left: 5px solid var(--sheriff-gold); padding: 15px; margin-bottom: 15px; font-style: italic; }
+        .price-list li { padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; }
+        
+        /* Help Overlay */
+        #help-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); color: white; z-index: 100; padding-top: 50px; }
+        .help-content { max-width: 500px; margin: 0 auto; background: var(--mtn-blue); padding: 25px; border-radius: 10px; text-align: left; }
     </style>
 </head>
 <body>
 
-<div class="container" id="main-menu">
-    <div class="town-header">
-        <h1>🏔️ Frostbite Falls</h1>
-        <span class="sub-tag">"The Coldest Little Town in the Rockies"</span>
+<div id="help-overlay" class="hidden" onclick="closeHelp()">
+    <div class="help-content">
+        <h2 id="help-title">How to Play</h2>
+        <p id="help-text"></p>
+        <button onclick="closeHelp()">Got it!</button>
     </div>
-    
-    <div id="news-ticker" class="news-flash">📢 LOCAL NEWS: Weather clear, for now...</div>
-    
-    <button onclick="triggerNews()" class="btn-news">🗞️ BREAKING NEWS (Event)</button>
-    <button onclick="startBuyer()">🛍️ I'm a Local Citizen (Buyer)</button>
-    <button onclick="showSellerMenu()">🏪 I'm a Business Owner (Seller)</button>
-    <button onclick="showSheriff()" class="btn-sheriff">⭐ I am the TOWN SHERIFF</button>
 </div>
 
-<div class="container hidden" id="sheriff-section">
-    <h2>⭐ Sheriff's Office</h2>
-    <div class="sheriff-card">
-        <div class="personality-box">
-            <strong>Acting Tip:</strong> No-nonsense and strict. 🤠 Wear a badge (or a sticker). You are looking for rule-breakers!
-        </div>
-        <h3>⚖️ The Law of the Land:</h3>
-        <ul>
-            <li><strong>Littering:</strong> $20 Fine</li>
-            <li><strong>No Winter Tires:</strong> $20 Fine</li>
-            <li><strong>Running in the Snow:</strong> $20 Fine</li>
-            <li><strong>Public Disturbance:</strong> $20 Fine</li>
-        </ul>
-        <p><em>When you catch someone, tell them: "That's a $20 fine, citizen! Pay the app now."</em></p>
+<div class="container" id="main-menu">
+    <h1>🏔️ Frostbite Falls, USA</h1>
+    <div id="news-ticker" class="news-flash">📢 LOCAL NEWS: Winter is coming! Stay warm.</div>
+    
+    <button onclick="triggerNews()" class="btn-news">🗞️ BREAKING NEWS (New Event)</button>
+    <div style="position:relative;">
+        <button onclick="startBuyer()">🛍️ I am a Citizen (Buyer)</button>
+        <div class="help-btn" onclick="openHelp('buyer')">?</div>
     </div>
-    <button onclick="resetApp()" style="background:#7f8c8d;">Exit Duty</button>
+    <div style="position:relative;">
+        <button onclick="showSellerMenu()">🏪 I am a Business (Seller)</button>
+        <div class="help-btn" onclick="openHelp('seller')">?</div>
+    </div>
+    <div style="position:relative;">
+        <button onclick="showSheriff()" class="btn-sheriff">⭐ I am the Sheriff</button>
+        <div class="help-btn" onclick="openHelp('sheriff')">?</div>
+    </div>
 </div>
 
 <div class="container hidden" id="buyer-section">
     <h2 id="mission-title">Mission</h2>
-    <div class="buyer-card">
+    <div class="card">
         <p id="mission-context"></p>
         <ul id="shopping-list"></ul>
     </div>
-    <div class="wallet-box">💰 Funds: $<span id="wallet-val">0</span></div>
+    <div class="wallet-box">💰 $<span id="wallet-val">0</span></div>
     
-    <button onclick="changeMoney(-20)" style="background:var(--emergency-red); border: 2px solid white;">🚨 PAY SHERIFF FINE ($20)</button>
-
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+        <button onclick="changeMoney(-20)" style="background:var(--fine-red); font-size: 14px;">🚨 Language Fine ($20)</button>
+        <button onclick="changeMoney(-10)" style="background:#e67e22; font-size: 14px;">🚨 Grammar Fine ($10)</button>
         <button onclick="changeMoney(-10)">Spend $10</button>
         <button onclick="changeMoney(-1)">Spend $1</button>
-        <button onclick="changeMoney(10)" style="background:#95a5a6;">Change $10</button>
-        <button onclick="resetApp()" style="background:#7f8c8d;">Home</button>
     </div>
+    <button onclick="resetApp()" style="background:#7f8c8d;">Main Menu</button>
 </div>
 
 <div class="container hidden" id="seller-menu">
-    <h2>🏪 Main Street Businesses</h2>
+    <h2>🏪 Choose a Local Shop</h2>
     <div id="seller-buttons"></div>
     <button onclick="resetApp()" style="background:#7f8c8d;">Back</button>
 </div>
 
 <div class="container hidden" id="seller-dashboard">
     <h2 id="shop-title"></h2>
-    <div class="personality-box">
-        <strong>Acting Tip:</strong> <span id="shop-personality"></span>
-    </div>
+    <div class="personality-box"><strong>Your Character:</strong> <span id="shop-personality"></span></div>
     <ul class="price-list" id="shop-items"></ul>
     <button onclick="showSellerMenu()">Close Shop</button>
 </div>
 
+<div class="container hidden" id="sheriff-section">
+    <h2>⭐ Sheriff's Office</h2>
+    <div class="card">
+        <div class="personality-box"><strong>Tip:</strong> Catch people speaking Tajik or Russian and fine them!</div>
+        <h3>The Fines:</h3>
+        <ul>
+            <li>No English: <b>$20</b></li>
+            <li>Bad Grammar: <b>$10</b></li>
+            <li>Shouting: <b>$20</b></li>
+        </ul>
+    </div>
+    <button onclick="resetApp()" style="background:#7f8c8d;">Go Off-Duty</button>
+</div>
+
 <script>
-    // Logic for Missions and Shops remains the same for consistency
+    const helpData = {
+        buyer: "MISSION: Read your mission and go to the shops. Use English to buy the items on your list. Watch out for the Sheriff! If you speak your native language, you will lose money.",
+        seller: "MISSION: Open a shop. When citizens come to buy things, talk to them using your 'Acting Tip' character. You want to make money! You can negotiate the price in English.",
+        sheriff: "MISSION: Walk around the room. Listen to the citizens. If they speak Tajik, Russian, or use bad grammar, tell them to pay the fine. You must be strict!"
+    };
+
     const newsEvents = [
-        "🚨 BLIZZARD WARNING: The mountain pass is closed! Prices for firewood and salt just doubled.",
-        "🏈 SUPER BOWL SUNDAY: Everyone is buying snacks. The Grocer is very busy!",
-        "🐻 BEAR SIGHTING: A grizzly bear was seen near the Lodge. Stay indoors!",
-        "🧊 ICE STORM: Power lines are down! Hardware stores are sold out of batteries.",
-        "⛷️ TOURIST INVASION: 500 tourists just arrived from New York. Everything is expensive!",
-        "☀️ THAW OUT: The sun is out! Shovels are 50% off."
+        "🚨 BLIZZARD: Everything is freezing! All wood and heaters cost $10 more.",
+        "🏈 FOOTBALL SUNDAY: Everyone wants donuts and snacks. High demand!",
+        "🐻 BEAR ALERT: A bear is in the town center! Nobody can move for 1 minute.",
+        "⛷️ TOURISTS ARRIVE: Rich tourists are here. Sellers can raise prices!",
+        "⚠️ BLACK ICE: Road accident! Everyone must pay $5 for 'Road Tax'.",
+        "☀️ SUNNY DAY: Snow is melting. Shovels are cheap today!"
     ];
 
     const missionTemplates = [
-        {
-            title: "🚙 The Stuck Jeep",
-            context: (n) => `Your 4x4 Jeep is stuck in a snowdrift. You need ${n} helpers and gear.`,
-            list: (n) => [`🚜 ${n} Tow Chains (Plow Co.)`, "🧂 2 Bags of Salt (Plow Co.)", "☕ 1 Thermos of Coffee (Cafe)"],
-            budget: [60, 100]
-        },
-        {
-            title: "🪵 Cabin Lock-in",
-            context: (n) => `A snow-in is coming! Prepare your cabin for ${n} days.`,
-            list: (n) => [`🪵 ${n} Bundles of Oak (Lumber)`, `🥫 ${n} Cans of Chili (Grocer)`, "🧶 1 Thick Blanket (Granny's)"],
-            budget: [80, 150]
-        },
-        {
-            title: "🏒 Youth Hockey Coach",
-            context: (n) => `You're coaching the Falcons. You need supplies for ${n} kids.`,
-            list: (n) => [`🩹 ${n} First Aid Kits (Pharmacy)`, `🍩 ${n} Boxes of Donuts (Cafe)`, "🧤 2 Pairs of Mittens"],
-            budget: [120, 200]
-        }
+        { t: "🚙 The Stuck Jeep", c: (n)=>`Your truck is in a snow ditch. You need ${n} helpers.`, l: (n)=>[ `${n} Tow Chains (Plow Co.)`, "1 Shovel (Plow Co.)", "1 Coffee (Cafe)"], b: [80, 120] },
+        { t: "🪵 Cabin Prep", c: (n)=>`The heater is broken. Prepare for ${n} cold nights.`, l: (n)=>[ `${n} Oak Bundles (Lumber)`, "1 Blanket (Knits)", `${n} Cans of Soup (Grocer)`], b: [90, 150] },
+        { t: "🏒 Hockey Team", c: (n)=>`You are the coach for ${n} players.`, l: (n)=>[ `${n} First Aid Kits (Pharmacy)`, "1 Box of Donuts (Cafe)", "1 Whistle (General)"], b: [100, 180] },
+        { t: "🎂 Birthday Party", c: (n)=>`A winter birthday for ${n} kids.`, l: (n)=>[ `${n} Toys (Toy Shop)`, "1 Large Cake (Cafe)", "1 Festive Scarf (Knits)"], b: [110, 190] },
+        { t: "🔦 Blackout!", c: (n)=>`The lights are out in ${n} rooms.`, l: (n)=>[ `${n} Candle Boxes (General)`, "1 Radio (Hardware)", `${n} Cans of Chili (Grocer)`], b: [60, 110] },
+        { t: "🩹 The Cold Flu", c: (n)=>`${n} people in your house are sick.`, l: (n)=>[ `${n} Syrups (Pharmacy)`, "1 Thermometer (Pharmacy)", "1 Box of Tea (Grocer)"], b: [70, 120] },
+        { t: "⛷️ Ski Trip", c: (n)=>`Taking ${n} tourists up the mountain.`, l: (n)=>[ `${n} Lift Passes (Lodge)`, "1 Map (Newsstand)", `${n} Pairs of Socks (Knits)`], b: [150, 250] }
     ];
 
     const sellers = [
-        { name: "🛒 Rocky Mountain Grocer", personality: "Overly patriotic 🇺🇸. Asks if you're ready for the big game.", items: {"Chili": "$5", "Apples": "$2", "Milk": "$4", "Charcoal": "$10"} },
-        { name: "🚜 Big Red's Snow Plows", personality: "Rough and tumble 🚜. Thinks modern cars are 'wimpy'.", items: {"Salt Bag": "$15", "Shovel": "$20", "Tow Chain": "$35", "Tire Chains": "$60"} },
-        { name: "🧶 Granny's Cabin Knits", personality: "Town Gossip 👵. Wants to know who you're dating.", items: {"Wool Socks": "$15", "Beanie": "$20", "Mittens": "$15", "Blanket": "$40"} },
-        { name: "🪵 Sawmill Miller", personality: "Old-school mountain man 🪓. Grunts more than he talks.", items: {"Oak Logs": "$25", "Pine Logs": "$15", "Axe": "$45", "Firestarter": "$5"} },
-        { name: "☕ The Coffee Cabin", personality: "Caffeine-addict ☕. Talks 100mph about the town news.", items: {"Large Coffee": "$6", "Box of Donuts": "$15", "Apple Pie": "$12", "Cocoa": "$5"} }
+        { name: "🛒 Mountain Grocer", p: "Patriotic and proud 🇺🇸.", i: {"Chili": "$6", "Soup": "$4", "Milk": "$5", "Tea": "$4"} },
+        { name: "🚜 Big Red's Plows", p: "Rough and tough mechanic 🚜.", i: {"Tow Chain": "$30", "Salt": "$10", "Shovel": "$20", "Gloves": "$15"} },
+        { name: "🧶 Granny's Knits", p: "Gossipy and very sweet 👵.", i: {"Socks": "$12", "Beanie": "$18", "Blanket": "$45", "Mittens": "$10"} },
+        { name: "🪵 Sawmill Miller", p: "Speaks only 2 or 3 words 🪓.", i: {"Oak Logs": "$20", "Pine Logs": "$12", "Axe": "$40", "Saw": "$35"} },
+        { name: "☕ The Coffee Cabin", p: "High energy, talks fast ☕.", i: {"Coffee": "$5", "Donuts": "$12", "Cake": "$15", "Cocoa": "$4"} },
+        { name: "🚠 Peak Lodge", p: "Rich, posh, and snobby 💅.", i: {"Lift Pass": "$60", "Goggles": "$50", "Champagne": "$80", "Scarf": "$40"} },
+        { name: "🏥 Village Pharmacy", p: "Very worried about germs 🤒.", i: {"Syrup": "$10", "Vitamins": "$15", "First Aid": "$12", "Mask": "$5"} },
+        { name: "📰 Snowy Newsstand", p: "Grumpy, hates the cold 😠.", i: {"Paper": "$3", "Map": "$6", "Magazine": "$7", "Puzzle": "$5"} },
+        { name: "🧸 The Toy Workshop", p: "Secretive and whispers 🤫.", i: {"Train": "$20", "Bear": "$15", "Doll": "$12", "Game": "$25"} },
+        { name: "🔨 Hardware Haven", p: "Survivalist expert ⚒️.", i: {"Radio": "$25", "Candles": "$5", "Torch": "$15", "Batteries": "$8"} }
     ];
 
     let currentWallet = 0;
+
+    function openHelp(role) {
+        document.getElementById('help-title').innerText = "How to be a " + role.toUpperCase();
+        document.getElementById('help-text').innerText = helpData[role];
+        document.getElementById('help-overlay').classList.remove('hidden');
+    }
+    function closeHelp() { document.getElementById('help-overlay').classList.add('hidden'); }
 
     function triggerNews() {
         const msg = newsEvents[Math.floor(Math.random() * newsEvents.length)];
@@ -184,70 +163,55 @@
         alert(msg);
     }
 
-    function showSheriff() {
-        document.getElementById('main-menu').classList.add('hidden');
-        document.getElementById('sheriff-section').classList.remove('hidden');
-    }
-
     function startBuyer() {
-        const template = missionTemplates[Math.floor(Math.random() * missionTemplates.length)];
+        const temp = missionTemplates[Math.floor(Math.random() * missionTemplates.length)];
         const n = Math.floor(Math.random() * 3) + 2;
-        document.getElementById('mission-title').innerText = template.title;
-        document.getElementById('mission-context').innerText = template.context(n);
-        const listEl = document.getElementById('shopping-list');
-        listEl.innerHTML = "";
-        template.list(n).forEach(item => {
-            let li = document.createElement('li'); li.innerText = item; listEl.appendChild(li);
-        });
-        currentWallet = Math.floor(Math.random() * (template.budget[1] - template.budget[0])) + template.budget[0];
-        updateWalletDisplay();
+        document.getElementById('mission-title').innerText = temp.t;
+        document.getElementById('mission-context').innerText = temp.c(n);
+        const list = document.getElementById('shopping-list');
+        list.innerHTML = "";
+        temp.l(n).forEach(i => { let li = document.createElement('li'); li.innerText = i; list.appendChild(li); });
+        currentWallet = Math.floor(Math.random() * (temp.b[1] - temp.b[0])) + temp.b[0];
+        document.getElementById('wallet-val').innerText = currentWallet;
         document.getElementById('main-menu').classList.add('hidden');
         document.getElementById('buyer-section').classList.remove('hidden');
     }
 
     function showSellerMenu() {
-        const container = document.getElementById('seller-buttons');
-        container.innerHTML = "";
-        sellers.forEach((shop, index) => {
-            let btn = document.createElement('button');
-            btn.innerText = shop.name;
-            btn.onclick = () => openShop(index);
-            container.appendChild(btn);
+        const cont = document.getElementById('seller-buttons');
+        cont.innerHTML = "";
+        sellers.forEach((s, idx) => {
+            let b = document.createElement('button'); b.innerText = s.name;
+            b.onclick = () => {
+                document.getElementById('shop-title').innerText = s.name;
+                document.getElementById('shop-personality').innerText = s.p;
+                const items = document.getElementById('shop-items');
+                items.innerHTML = "";
+                for(const [k, v] of Object.entries(s.items)) {
+                    let li = document.createElement('li'); li.innerHTML = `<span>${k}</span><span>${v}</span>`;
+                    items.appendChild(li);
+                }
+                document.getElementById('seller-menu').classList.add('hidden');
+                document.getElementById('seller-dashboard').classList.remove('hidden');
+            };
+            cont.appendChild(b);
         });
         document.getElementById('main-menu').classList.add('hidden');
         document.getElementById('seller-menu').classList.remove('hidden');
     }
 
-    function openShop(index) {
-        const shop = sellers[index];
-        document.getElementById('shop-title').innerText = shop.name;
-        document.getElementById('shop-personality').innerText = shop.personality;
-        const list = document.getElementById('shop-items');
-        list.innerHTML = "";
-        for (const [item, price] of Object.entries(shop.items)) {
-            let li = document.createElement('li');
-            li.innerHTML = `<span>${item}</span> <span>${price}</span>`;
-            list.appendChild(li);
-        }
-        document.getElementById('seller-menu').classList.add('hidden');
-        document.getElementById('seller-dashboard').classList.remove('hidden');
+    function showSheriff() {
+        document.getElementById('main-menu').classList.add('hidden');
+        document.getElementById('sheriff-section').classList.remove('hidden');
     }
 
     function changeMoney(amt) {
-        if(currentWallet + amt < 0) return alert("You're broke! Time to get a job at the Sawmill.");
+        if(currentWallet + amt < 0) return alert("Broke!");
         currentWallet += amt;
-        updateWalletDisplay();
+        document.getElementById('wallet-val').innerText = currentWallet;
     }
 
-    function updateWalletDisplay() { document.getElementById('wallet-val').innerText = currentWallet; }
-    function resetApp() { 
-        document.getElementById('main-menu').classList.remove('hidden');
-        document.getElementById('buyer-section').classList.add('hidden');
-        document.getElementById('seller-menu').classList.add('hidden');
-        document.getElementById('seller-dashboard').classList.add('hidden');
-        document.getElementById('sheriff-section').classList.add('hidden');
-    }
+    function resetApp() { location.reload(); }
 </script>
-
 </body>
 </html>
