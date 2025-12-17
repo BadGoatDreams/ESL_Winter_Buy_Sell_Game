@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frostbite Falls: The Complete Winter Town</title>
+    <title>Frostbite Falls: Winter Emergency</title>
     <style>
         :root {
             --mtn-blue: #2c3e50;
@@ -13,16 +13,22 @@
             --pine: #27ae60;
         }
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--snow); margin: 0; padding: 20px; }
-        .container { max-width: 650px; margin: 0 auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-top: 10px solid var(--mtn-blue); }
+        .container { max-width: 650px; margin: 0 auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-top: 10px solid var(--mtn-blue); position: relative; }
         
         h1 { color: var(--mtn-blue); margin-top: 0; text-transform: uppercase; }
         .news-flash { background: var(--mtn-blue); color: var(--gold); padding: 12px; border-radius: 5px; margin: 15px 0; font-weight: bold; border: 2px solid var(--gold); }
 
-        button { background: var(--mtn-blue); color: white; border: none; padding: 15px; margin: 8px 0; font-size: 17px; border-radius: 6px; cursor: pointer; width: 100%; transition: 0.2s; position: relative; }
+        button { background: var(--mtn-blue); color: white; border: none; padding: 15px; margin: 8px 0; font-size: 17px; border-radius: 6px; cursor: pointer; width: 100%; transition: 0.2s; }
         button:hover { opacity: 0.9; transform: translateY(-1px); }
         .btn-news { background: var(--fine-red); }
         .btn-sheriff { border: 2px solid var(--gold); color: var(--gold); }
-        .help-btn { background: #7f8c8d; width: 40px; height: 40px; border-radius: 50%; display: inline-block; position: absolute; right: 10px; top: 10px; font-weight: bold; padding: 0; line-height: 40px; }
+        
+        /* New UI for Help Button inside screens */
+        .inner-help-btn { 
+            background: #7f8c8d; color: white; border-radius: 50%; width: 30px; height: 30px; 
+            display: flex; align-items: center; justify-content: center; font-weight: bold;
+            position: absolute; right: 20px; top: 20px; cursor: pointer; border: 2px solid white;
+        }
 
         .hidden { display: none; }
         .card { text-align: left; padding: 20px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; margin: 15px 0; }
@@ -31,41 +37,32 @@
         .price-list { list-style: none; padding: 0; }
         .price-list li { padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; }
         
-        /* Help Overlay */
-        #help-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); color: white; z-index: 100; padding-top: 50px; }
-        .help-content { max-width: 500px; margin: 0 auto; background: var(--mtn-blue); padding: 25px; border-radius: 10px; text-align: left; }
+        #help-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); color: white; z-index: 100; display: flex; align-items: center; justify-content: center; }
+        .help-content { max-width: 400px; background: var(--mtn-blue); padding: 30px; border-radius: 10px; text-align: left; border: 2px solid var(--gold); }
     </style>
 </head>
 <body>
 
 <div id="help-overlay" class="hidden" onclick="closeHelp()">
     <div class="help-content">
-        <h2 id="help-title">How to Play</h2>
-        <p id="help-text"></p>
-        <button onclick="closeHelp()">Got it!</button>
+        <h2 id="help-title">Instructions</h2>
+        <p id="help-text" style="line-height: 1.5;"></p>
+        <button onclick="closeHelp()">Back to Game</button>
     </div>
 </div>
 
 <div class="container" id="main-menu">
     <h1>🏔️ Frostbite Falls, USA</h1>
-    <div id="news-ticker" class="news-flash">📢 LOCAL NEWS: Winter is coming! Stay warm.</div>
+    <div id="news-ticker" class="news-flash">📢 LOCAL NEWS: Winter is here! Keep it English!</div>
     
-    <button onclick="triggerNews()" class="btn-news">🗞️ BREAKING NEWS (New Event)</button>
-    <div style="position:relative;">
-        <button onclick="startBuyer()">🛍️ I am a Citizen (Buyer)</button>
-        <div class="help-btn" onclick="openHelp('buyer')">?</div>
-    </div>
-    <div style="position:relative;">
-        <button onclick="showSellerMenu()">🏪 I am a Business (Seller)</button>
-        <div class="help-btn" onclick="openHelp('seller')">?</div>
-    </div>
-    <div style="position:relative;">
-        <button onclick="showSheriff()" class="btn-sheriff">⭐ I am the Sheriff</button>
-        <div class="help-btn" onclick="openHelp('sheriff')">?</div>
-    </div>
+    <button onclick="triggerNews()" class="btn-news">🗞️ BREAKING NEWS (Event)</button>
+    <button onclick="startBuyer()">🛍️ I am a Citizen (Buyer)</button>
+    <button onclick="showSellerMenu()">🏪 I am a Business (Seller)</button>
+    <button onclick="showSheriff()" class="btn-sheriff">⭐ I am the Sheriff</button>
 </div>
 
 <div class="container hidden" id="buyer-section">
+    <div class="inner-help-btn" onclick="openHelp('buyer')">?</div>
     <h2 id="mission-title">Mission</h2>
     <div class="card">
         <p id="mission-context"></p>
@@ -79,41 +76,45 @@
         <button onclick="changeMoney(-10)">Spend $10</button>
         <button onclick="changeMoney(-1)">Spend $1</button>
     </div>
-    <button onclick="resetApp()" style="background:#7f8c8d;">Main Menu</button>
+    <button onclick="resetApp()" style="background:#7f8c8d;">Home</button>
 </div>
 
 <div class="container hidden" id="seller-menu">
-    <h2>🏪 Choose a Local Shop</h2>
+    <div class="inner-help-btn" onclick="openHelp('seller')">?</div>
+    <h2>🏪 Select Your Business</h2>
     <div id="seller-buttons"></div>
     <button onclick="resetApp()" style="background:#7f8c8d;">Back</button>
 </div>
 
 <div class="container hidden" id="seller-dashboard">
+    <div class="inner-help-btn" onclick="openHelp('seller')">?</div>
     <h2 id="shop-title"></h2>
     <div class="personality-box"><strong>Your Character:</strong> <span id="shop-personality"></span></div>
     <ul class="price-list" id="shop-items"></ul>
-    <button onclick="showSellerMenu()">Close Shop</button>
+    <button onclick="showSellerMenu()">Change Shop</button>
+    <button onclick="resetApp()" style="background:#7f8c8d;">Main Menu</button>
 </div>
 
 <div class="container hidden" id="sheriff-section">
+    <div class="inner-help-btn" onclick="openHelp('sheriff')">?</div>
     <h2>⭐ Sheriff's Office</h2>
     <div class="card">
         <div class="personality-box"><strong>Tip:</strong> Catch people speaking Tajik or Russian and fine them!</div>
-        <h3>The Fines:</h3>
+        <h3>The Laws:</h3>
         <ul>
             <li>No English: <b>$20</b></li>
             <li>Bad Grammar: <b>$10</b></li>
-            <li>Shouting: <b>$20</b></li>
+            <li>No 'S' on plurals: <b>$10</b></li>
         </ul>
     </div>
-    <button onclick="resetApp()" style="background:#7f8c8d;">Go Off-Duty</button>
+    <button onclick="resetApp()" style="background:#7f8c8d;">Exit Duty</button>
 </div>
 
 <script>
     const helpData = {
-        buyer: "MISSION: Read your mission and go to the shops. Use English to buy the items on your list. Watch out for the Sheriff! If you speak your native language, you will lose money.",
-        seller: "MISSION: Open a shop. When citizens come to buy things, talk to them using your 'Acting Tip' character. You want to make money! You can negotiate the price in English.",
-        sheriff: "MISSION: Walk around the room. Listen to the citizens. If they speak Tajik, Russian, or use bad grammar, tell them to pay the fine. You must be strict!"
+        buyer: "BUYER ROLE: Go to different shops and use English to buy the items on your list. If the Sheriff catches you speaking Tajik or Russian, you lose $20! Try to negotiate for cheaper prices.",
+        seller: "SELLER ROLE: You are a business owner. When a buyer comes, act like your character (the tip in yellow). Your goal is to make money! If they use bad English, tell the Sheriff.",
+        sheriff: "SHERIFF ROLE: Walk around. Listen carefully. If anyone speaks Tajik, Russian, or makes a big grammar mistake, tell them 'That's a fine!' and make them press the Fine button on their screen."
     };
 
     const newsEvents = [
@@ -126,7 +127,7 @@
     ];
 
     const missionTemplates = [
-        { t: "🚙 The Stuck Jeep", c: (n)=>`Your truck is in a snow ditch. You need ${n} helpers.`, l: (n)=>[ `${n} Tow Chains (Plow Co.)`, "1 Shovel (Plow Co.)", "1 Coffee (Cafe)"], b: [80, 120] },
+        { t: "🚙 The Stuck Jeep", c: (n)=>`Your truck is stuck. You need ${n} helpers.`, l: (n)=>[ `${n} Tow Chains (Plow Co.)`, "1 Shovel (Plow Co.)", "1 Coffee (Cafe)"], b: [80, 120] },
         { t: "🪵 Cabin Prep", c: (n)=>`The heater is broken. Prepare for ${n} cold nights.`, l: (n)=>[ `${n} Oak Bundles (Lumber)`, "1 Blanket (Knits)", `${n} Cans of Soup (Grocer)`], b: [90, 150] },
         { t: "🏒 Hockey Team", c: (n)=>`You are the coach for ${n} players.`, l: (n)=>[ `${n} First Aid Kits (Pharmacy)`, "1 Box of Donuts (Cafe)", "1 Whistle (General)"], b: [100, 180] },
         { t: "🎂 Birthday Party", c: (n)=>`A winter birthday for ${n} kids.`, l: (n)=>[ `${n} Toys (Toy Shop)`, "1 Large Cake (Cafe)", "1 Festive Scarf (Knits)"], b: [110, 190] },
@@ -136,22 +137,22 @@
     ];
 
     const sellers = [
-        { name: "🛒 Mountain Grocer", p: "Patriotic and proud 🇺🇸.", i: {"Chili": "$6", "Soup": "$4", "Milk": "$5", "Tea": "$4"} },
-        { name: "🚜 Big Red's Plows", p: "Rough and tough mechanic 🚜.", i: {"Tow Chain": "$30", "Salt": "$10", "Shovel": "$20", "Gloves": "$15"} },
-        { name: "🧶 Granny's Knits", p: "Gossipy and very sweet 👵.", i: {"Socks": "$12", "Beanie": "$18", "Blanket": "$45", "Mittens": "$10"} },
-        { name: "🪵 Sawmill Miller", p: "Speaks only 2 or 3 words 🪓.", i: {"Oak Logs": "$20", "Pine Logs": "$12", "Axe": "$40", "Saw": "$35"} },
-        { name: "☕ The Coffee Cabin", p: "High energy, talks fast ☕.", i: {"Coffee": "$5", "Donuts": "$12", "Cake": "$15", "Cocoa": "$4"} },
-        { name: "🚠 Peak Lodge", p: "Rich, posh, and snobby 💅.", i: {"Lift Pass": "$60", "Goggles": "$50", "Champagne": "$80", "Scarf": "$40"} },
-        { name: "🏥 Village Pharmacy", p: "Very worried about germs 🤒.", i: {"Syrup": "$10", "Vitamins": "$15", "First Aid": "$12", "Mask": "$5"} },
-        { name: "📰 Snowy Newsstand", p: "Grumpy, hates the cold 😠.", i: {"Paper": "$3", "Map": "$6", "Magazine": "$7", "Puzzle": "$5"} },
-        { name: "🧸 The Toy Workshop", p: "Secretive and whispers 🤫.", i: {"Train": "$20", "Bear": "$15", "Doll": "$12", "Game": "$25"} },
+        { name: "🛒 Mountain Grocer", p: "Overly patriotic 🇺🇸.", i: {"Chili": "$6", "Soup": "$4", "Milk": "$5", "Tea": "$4"} },
+        { name: "🚜 Big Red's Plows", p: "Rough mechanic 🚜.", i: {"Tow Chain": "$30", "Salt": "$10", "Shovel": "$20", "Gloves": "$15"} },
+        { name: "🧶 Granny's Knits", p: "Town Gossip 👵.", i: {"Socks": "$12", "Beanie": "$18", "Blanket": "$45", "Mittens": "$10"} },
+        { name: "🪵 Sawmill Miller", p: "Grunts, speaks 2 words 🪓.", i: {"Oak Logs": "$20", "Pine Logs": "$12", "Axe": "$40", "Saw": "$35"} },
+        { name: "☕ The Coffee Cabin", p: "Talks 100mph ☕.", i: {"Coffee": "$5", "Donuts": "$12", "Cake": "$15", "Cocoa": "$4"} },
+        { name: "🚠 Peak Lodge", p: "Rich and snobby 💅.", i: {"Lift Pass": "$60", "Goggles": "$50", "Champagne": "$80", "Scarf": "$40"} },
+        { name: "🏥 Village Pharmacy", p: "Scared of germs 🤒.", i: {"Syrup": "$10", "Vitamins": "$15", "First Aid": "$12", "Mask": "$5"} },
+        { name: "📰 Snowy Newsstand", p: "Grumpy, hates cold 😠.", i: {"Paper": "$3", "Map": "$6", "Magazine": "$7", "Puzzle": "$5"} },
+        { name: "🧸 Toy Workshop", p: "Secretive, whispers 🤫.", i: {"Train": "$20", "Bear": "$15", "Doll": "$12", "Game": "$25"} },
         { name: "🔨 Hardware Haven", p: "Survivalist expert ⚒️.", i: {"Radio": "$25", "Candles": "$5", "Torch": "$15", "Batteries": "$8"} }
     ];
 
     let currentWallet = 0;
 
     function openHelp(role) {
-        document.getElementById('help-title').innerText = "How to be a " + role.toUpperCase();
+        document.getElementById('help-title').innerText = "Role: " + role.toUpperCase();
         document.getElementById('help-text').innerText = helpData[role];
         document.getElementById('help-overlay').classList.remove('hidden');
     }
@@ -171,9 +172,9 @@
         const list = document.getElementById('shopping-list');
         list.innerHTML = "";
         temp.l(n).forEach(i => { let li = document.createElement('li'); li.innerText = i; list.appendChild(li); });
-        currentWallet = Math.floor(Math.random() * (temp.b[1] - temp.b[0])) + temp.b[0];
+        currentWallet = Math.floor(Math.random() * (temp.b[1] - temp.b[0] + 1)) + temp.b[0];
         document.getElementById('wallet-val').innerText = currentWallet;
-        document.getElementById('main-menu').classList.add('hidden');
+        hideAll();
         document.getElementById('buyer-section').classList.remove('hidden');
     }
 
@@ -181,37 +182,50 @@
         const cont = document.getElementById('seller-buttons');
         cont.innerHTML = "";
         sellers.forEach((s, idx) => {
-            let b = document.createElement('button'); b.innerText = s.name;
-            b.onclick = () => {
-                document.getElementById('shop-title').innerText = s.name;
-                document.getElementById('shop-personality').innerText = s.p;
-                const items = document.getElementById('shop-items');
-                items.innerHTML = "";
-                for(const [k, v] of Object.entries(s.items)) {
-                    let li = document.createElement('li'); li.innerHTML = `<span>${k}</span><span>${v}</span>`;
-                    items.appendChild(li);
-                }
-                document.getElementById('seller-menu').classList.add('hidden');
-                document.getElementById('seller-dashboard').classList.remove('hidden');
-            };
+            let b = document.createElement('button'); 
+            b.innerText = s.name;
+            b.onclick = () => openShop(idx);
             cont.appendChild(b);
         });
-        document.getElementById('main-menu').classList.add('hidden');
+        hideAll();
         document.getElementById('seller-menu').classList.remove('hidden');
     }
 
+    function openShop(idx) {
+        const s = sellers[idx];
+        document.getElementById('shop-title').innerText = s.name;
+        document.getElementById('shop-personality').innerText = s.p;
+        const itemsList = document.getElementById('shop-items');
+        itemsList.innerHTML = "";
+        for(const [name, price] of Object.entries(s.items)) {
+            let li = document.createElement('li');
+            li.innerHTML = `<span>${name}</span><span>${price}</span>`;
+            itemsList.appendChild(li);
+        }
+        hideAll();
+        document.getElementById('seller-dashboard').classList.remove('hidden');
+    }
+
     function showSheriff() {
-        document.getElementById('main-menu').classList.add('hidden');
+        hideAll();
         document.getElementById('sheriff-section').classList.remove('hidden');
     }
 
     function changeMoney(amt) {
-        if(currentWallet + amt < 0) return alert("Broke!");
+        if(currentWallet + amt < 0) return alert("You don't have enough money!");
         currentWallet += amt;
         document.getElementById('wallet-val').innerText = currentWallet;
     }
 
-    function resetApp() { location.reload(); }
+    function hideAll() {
+        document.getElementById('main-menu').classList.add('hidden');
+        document.getElementById('buyer-section').classList.add('hidden');
+        document.getElementById('seller-menu').classList.add('hidden');
+        document.getElementById('seller-dashboard').classList.add('hidden');
+        document.getElementById('sheriff-section').classList.add('hidden');
+    }
+
+    function resetApp() { hideAll(); document.getElementById('main-menu').classList.remove('hidden'); }
 </script>
 </body>
 </html>
